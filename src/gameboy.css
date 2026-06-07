@@ -26,7 +26,7 @@
   transform: scale(var(--gb-scale, 0.5));
   transform-origin: center center;
   flex-shrink: 0;
-  top: -100px;
+  /* top: 0px; */
 }
 .gameboy * {
   -webkit-touch-callout: none;

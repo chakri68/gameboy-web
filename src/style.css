@@ -158,26 +158,31 @@ body {
 }
 
 /* The camera wraps the handheld (centered in the viewport); zoom transforms apply
-   here. --gb-scale shrinks the 660x1080 device to fit; responsive overrides below. */
+   here. --gb-scale shrinks the 660x1080 device to fit. The scale tracks BOTH axes:
+   it's the largest factor that keeps the device within ~92% of the width and ~72%
+   of the height, clamped so it never gets comically big or unusably small. This is
+   what makes the handheld responsive on everything from tall phones to wide desktops
+   without discrete breakpoints. */
 .camera {
-  --gb-scale: 0.5;
+  --gb-scale: clamp(0.3, min(92vw / 660px, 72vh / 1080px), 0.55);
   position: absolute;
   inset: 0;
   display: grid;
   place-items: center;
+  /* center the (content-sized) device track in the viewport too, so when the device
+     is wider than a narrow screen the scale shrinks it toward the viewport center
+     instead of the device's own left-anchored box. */
+  place-content: center;
   /* nudge the device up so its screen clears the bottom shelf tray */
-  padding-bottom: 20vh;
+  padding-bottom: 18vh;
   transform-origin: center center;
   will-change: transform;
 }
-@media (max-height: 820px) {
+/* Tall, narrow phones: the bottom tray is shorter, so give the device more room. */
+@media (max-width: 720px) {
   .camera {
-    --gb-scale: 0.42;
-  }
-}
-@media (max-height: 680px) {
-  .camera {
-    --gb-scale: 0.34;
+    --gb-scale: clamp(0.34, min(94vw / 660px, 64vh / 1080px), 0.5);
+    padding-bottom: 14vh;
   }
 }
 
@@ -281,6 +286,7 @@ html:has(body.immersive) {
   padding: 4vh 4vw;
   background: rgba(5, 4, 9, 0.82);
   backdrop-filter: blur(6px);
+  overflow-y: auto;
 }
 .cart-modal__panel {
   display: flex;
@@ -289,11 +295,12 @@ html:has(body.immersive) {
   gap: 1.1rem;
   max-width: 420px;
   width: 100%;
+  max-height: 92dvh;
   text-align: center;
 }
-/* room for the tumbling 3D cartridge */
+/* room for the tumbling 3D cartridge (shrinks on short viewports) */
 .cart-modal__stage {
-  height: 300px;
+  height: min(300px, 40dvh);
   display: grid;
   place-items: center;
 }
@@ -644,6 +651,60 @@ html:has(body.immersive) {
     width: 100%;
     max-height: 34dvh;
     border-radius: 12px 12px 0 0;
+  }
+  /* The right-aligned blurb crowds the title on narrow rows - drop it and let the
+     title breathe; the cartridge preview still shows the full blurb. */
+  .gamelist__blurb {
+    display: none;
+  }
+  .gamelist__item {
+    gap: 0.5rem;
+  }
+
+  /* Smaller floating controls so they don't dominate a phone screen. */
+  .controls {
+    top: 10px;
+    right: 10px;
+    gap: 6px;
+  }
+  .icon-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  /* Modals: less inset, more usable area on small screens. */
+  .overlay,
+  .cart-modal {
+    padding: 3vh 3vw;
+  }
+  .overlay__panel {
+    padding: 1.1rem;
+    max-height: 90dvh;
+  }
+  .overlay__grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Keep the play badge clear of the bottom tray on short phones. */
+  .play-hint {
+    bottom: max(4vh, env(safe-area-inset-bottom, 0px));
+  }
+  .eject-fab {
+    bottom: max(14px, env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/* Very small / landscape phones: little vertical room, so let the device shrink
+   further (lower floor, height-led), drop the bottom padding, and shrink the tray
+   so the LCD stays on-screen instead of scrolling off the top. */
+@media (max-height: 560px) {
+  .camera {
+    --gb-scale: clamp(0.2, min(94vw / 660px, 64vh / 1080px), 0.5);
+    padding-top: 26vh;
+    padding-bottom: 2vh;
+  }
+  .gamelist {
+    max-height: 30dvh;
   }
 }
 
