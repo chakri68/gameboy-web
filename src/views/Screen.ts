@@ -79,7 +79,7 @@ export class Screen {
       [this.content],
     );
     window.addEventListener("resize", this.resizeHandler, { passive: true });
-    window.addEventListener("message", this.onSkinReady);
+    // window.addEventListener("message", this.onSkinReady);
   }
 
   /** Play the boot sequence, then call onComplete. Skippable via A / click. */
@@ -174,7 +174,7 @@ export class Screen {
       // directly via the DOM; cross-origin demos are asked to skin themselves via
       // postMessage (a no-op unless they include the listener snippet). Runs on
       // every load so in-frame navigations re-skin.
-      if (!this.injectScreenSkin(iframe)) this.postScreenSkin(iframe);
+      // if (!this.injectScreenSkin(iframe)) this.postScreenSkin(iframe);
       if (settled) return;
       settled = true;
       if (this.frameTimer) clearTimeout(this.frameTimer);
@@ -273,7 +273,7 @@ export class Screen {
 
   destroy(): void {
     window.removeEventListener("resize", this.resizeHandler);
-    window.removeEventListener("message", this.onSkinReady);
+    // window.removeEventListener("message", this.onSkinReady);
     this.clear();
     this.el.remove();
   }
