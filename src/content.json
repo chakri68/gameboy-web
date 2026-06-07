@@ -2,18 +2,6 @@
   "version": 1,
   "roms": [
     {
-      "id": "sliding-puzzle",
-      "title": "Sliding Puzzle",
-      "blurb": "A* vs BFS solving the 8-puzzle, live",
-      "tech": ["a-star", "bfs", "typescript", "visualization"],
-      "repo": "https://github.com/chakri68/sliding-puzzle",
-      "demo": "https://chakri.me/sliding-puzzle/",
-      "display": "embed",
-      "tier": 1,
-      "accent": "#5bc8af",
-      "enabled": true
-    },
-    {
       "id": "ascii-tetris",
       "title": "ASCII Tetris",
       "blurb": "Tetris rendered entirely in ASCII",
@@ -56,6 +44,18 @@
       "tech": ["typescript", "canvas", "simulation", "visualization"],
       "repo": "https://github.com/chakri68/boirds",
       "demo": "https://chakri.me/boirds/",
+      "display": "embed",
+      "tier": 1,
+      "accent": "#5bc8af",
+      "enabled": true
+    },
+    {
+      "id": "sliding-puzzle",
+      "title": "Sliding Puzzle",
+      "blurb": "A* vs BFS solving the 8-puzzle, live",
+      "tech": ["a-star", "bfs", "typescript", "visualization"],
+      "repo": "https://github.com/chakri68/sliding-puzzle",
+      "demo": "https://chakri.me/sliding-puzzle/",
       "display": "embed",
       "tier": 1,
       "accent": "#5bc8af",
