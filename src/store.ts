@@ -18,6 +18,10 @@ export interface State {
   unlocked: boolean; // hidden ROMs revealed via Konami
   soundOn: boolean;
   overlayOpen: boolean; // "all ROMs" Start overlay
+  /** loaded demo expanded from the LCD to fill the viewport (hybrid view, press A) */
+  expanded: boolean;
+  /** id of the ROM whose cartridge preview popup is open (null = none) */
+  previewId: string | null;
 }
 
 type Listener = (state: State) => void;
@@ -62,4 +66,6 @@ export const store = new Store({
   unlocked: false,
   soundOn: false,
   overlayOpen: false,
+  expanded: false,
+  previewId: null,
 });

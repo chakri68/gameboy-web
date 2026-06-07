@@ -1,0 +1,259 @@
+/* ============================================================
+   3D Game Boy cartridge - adapted from "GameBoy Cartridge" by
+   worksbyvan (CodePen MoxroE), pure HTML/CSS. The original SCSS
+   variables ($width:200px, $height:230px, greys) are resolved to
+   px here, the whole thing is scoped under .cart3d, and the
+   DeviantArt label image is replaced with a per-ROM accent label.
+   ============================================================ */
+
+/* Pen assumes content-box; keep it isolated from our global border-box reset. */
+.cart3d,
+.cart3d :where(*) {
+  box-sizing: content-box;
+}
+
+.cart3d figure {
+  margin: 0;
+  position: absolute;
+}
+
+.cart3d .cartridge {
+  display: inline-block;
+  width: 200px;
+  height: 230px;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+.cart3d .case {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  transform-style: preserve-3d;
+  animation: cart3d-rotate 20s infinite linear;
+}
+.cart3d:hover .case {
+  animation-play-state: paused; /* hover to inspect */
+}
+
+.cart3d .front,
+.cart3d .back {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+.cart3d .front .base,
+.cart3d .back .base {
+  background-color: #a7a9ac;
+  position: absolute;
+}
+.cart3d .tall {
+  height: 50%;
+  width: 90%;
+  top: 0;
+  left: 0;
+}
+.cart3d .wide {
+  height: 95%;
+  width: 100%;
+  bottom: 0;
+  right: 0;
+}
+.cart3d .front .linebase,
+.cart3d .back .linebase {
+  position: absolute;
+  background-color: #939598;
+  width: 100%;
+  height: 15%;
+  top: 9%;
+  left: 0;
+}
+.cart3d .front .line,
+.cart3d .back .line {
+  position: absolute;
+  background-color: #a7a9ac;
+  width: 104%;
+  left: -2%;
+  height: calc(15% / 9);
+}
+.cart3d .front .leftindent,
+.cart3d .front .rightindent,
+.cart3d .back .leftindent,
+.cart3d .back .rightindent {
+  position: absolute;
+  height: 65%;
+  width: 2%;
+  bottom: 0;
+  left: 0;
+  background-color: #939598;
+}
+.cart3d .rightindent {
+  right: 0;
+  left: auto;
+}
+.cart3d .oval {
+  position: absolute;
+  width: 75%;
+  height: 15%;
+  background-color: #939598;
+  border: #a7a9ac solid 4px;
+  border-radius: 10000000px;
+  left: calc(12.5% - 2%);
+  top: 7%;
+}
+.cart3d .label {
+  position: absolute;
+  height: 140px;
+  width: 70%;
+  bottom: 7%;
+  left: calc(15% - 1%);
+  border: #828487 solid 2px;
+  border-radius: 4px;
+  overflow: hidden;
+  background-color: #828487;
+  background-position: center;
+  background-size: cover;
+  /* per-ROM accent (set inline via --cart-accent) */
+  background-image: linear-gradient(
+    158deg,
+    var(--cart-accent, #e8b923) 0%,
+    color-mix(in srgb, var(--cart-accent, #e8b923) 55%, #15131c) 100%
+  );
+}
+.cart3d .front {
+  transform: translateZ(10px);
+}
+.cart3d .back {
+  transform: translateZ(-10px);
+}
+
+.cart3d .rightside,
+.cart3d .leftside {
+  width: 20px;
+  height: 100%;
+  bottom: 0;
+  right: -10px;
+  transform-style: preserve-3d;
+  transform: rotateY(90deg);
+}
+.cart3d .rightside .top,
+.cart3d .leftside .top {
+  background-color: #828487;
+  width: 100%;
+  height: 5%;
+  transform: translateZ(-20px);
+}
+.cart3d .rightside .bottom,
+.cart3d .leftside .bottom {
+  bottom: 0;
+  background-color: #939598;
+  width: 100%;
+  height: 95%;
+}
+.cart3d .rightside .line,
+.cart3d .leftside .line {
+  background-color: #828487;
+  height: calc(15% / 9);
+  width: 100%;
+  transform: translateZ(4px);
+}
+.cart3d .rightside .floor,
+.cart3d .rightside .ceiling,
+.cart3d .leftside .floor,
+.cart3d .leftside .ceiling {
+  background-color: #939598;
+  width: 100%;
+  height: 8px;
+  transform: rotateX(90deg);
+}
+.cart3d .rightside .ceiling,
+.cart3d .leftside .ceiling {
+  transform: translateY(-3.83px) rotateX(90deg);
+}
+.cart3d .leftside {
+  left: -10px;
+  right: auto;
+}
+.cart3d .leftside .bottom {
+  height: 100%;
+}
+.cart3d .leftside .line {
+  transform: translateZ(-4px);
+}
+
+.cart3d .topside {
+  width: 100%;
+  height: 20px;
+  top: -10px;
+  transform: rotateX(90deg);
+  transform-style: preserve-3d;
+}
+.cart3d .topside .left {
+  background-color: #939598;
+  width: 90%;
+  height: 100%;
+}
+.cart3d .topside .right {
+  background-color: #828487;
+  width: 10%;
+  height: 100%;
+  right: 0;
+  transform: translateZ(-11.5px);
+}
+.cart3d .bottomside {
+  background-color: #262626;
+  bottom: -10px;
+  height: 10px;
+  width: 190px;
+  transform: rotateX(90deg);
+  border: #828487 5px solid;
+}
+
+/* grip-line vertical positions (apply to front/back + side ridges alike) */
+.cart3d .one {
+  top: calc(9% + 15% / 9 * 1);
+}
+.cart3d .two {
+  top: calc(9% + 15% / 9 * 3);
+}
+.cart3d .three {
+  top: calc(9% + 15% / 9 * 5);
+}
+.cart3d .four {
+  top: calc(9% + 15% / 9 * 7);
+}
+
+/* our addition: ROM title on the label face */
+.cart3d__plate {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px;
+  text-align: center;
+}
+.cart3d__title {
+  font-family: var(--font-display);
+  font-size: 11px;
+  line-height: 1.35;
+  color: #14121c;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+.cart3d__sub {
+  font-family: var(--font-body);
+  font-size: 8px;
+  letter-spacing: 0.06em;
+  color: rgba(20, 18, 28, 0.7);
+}
+
+@keyframes cart3d-rotate {
+  0% {
+    transform: none;
+  }
+  100% {
+    transform: rotateZ(360deg) rotateX(360deg);
+  }
+}

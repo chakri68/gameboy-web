@@ -20,7 +20,9 @@ export const RomSchema = z
     demo: z.string().url().optional(), // url for embed/launch; omit for info
     display: DisplaySchema,
     tier: z.union([z.literal(1), z.literal(2), z.literal(3)]),
-    accent: z.string().regex(/^#[0-9a-fA-F]{6}$/, "accent must be a #rrggbb hex"),
+    accent: z
+      .string()
+      .regex(/^#[0-9a-fA-F]{6}$/, "accent must be a #rrggbb hex"),
     enabled: z.boolean(), // false => staged, never rendered
     hidden: z.boolean().optional(), // true => only shown after the Konami unlock
   })
@@ -43,14 +45,18 @@ export function parseContent(raw: unknown): Content {
   const result = ContentSchema.safeParse(raw);
   if (!result.success) {
     const issues = result.error.issues
-      .map((i) => `  • roms${i.path.length ? "." + i.path.join(".") : ""}: ${i.message}`)
+      .map(
+        (i) =>
+          `  • roms${i.path.length ? "." + i.path.join(".") : ""}: ${i.message}`,
+      )
       .join("\n");
     throw new Error(`Invalid content.json:\n${issues}`);
   }
   // Guard against duplicate ids, which would break shelf keys + sync diffing.
   const seen = new Set<string>();
   for (const rom of result.data.roms) {
-    if (seen.has(rom.id)) throw new Error(`Invalid content.json: duplicate id "${rom.id}"`);
+    if (seen.has(rom.id))
+      throw new Error(`Invalid content.json: duplicate id "${rom.id}"`);
     seen.add(rom.id);
   }
   return result.data;

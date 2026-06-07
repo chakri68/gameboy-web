@@ -11,7 +11,12 @@ function audio(): AudioContext | null {
   return ctx;
 }
 
-function blip(freq: number, start: number, dur: number, type: OscillatorType = "square") {
+function blip(
+  freq: number,
+  start: number,
+  dur: number,
+  type: OscillatorType = "square",
+) {
   const ac = audio();
   if (!ac) return;
   const osc = ac.createOscillator();

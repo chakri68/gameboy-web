@@ -18,5 +18,8 @@
     "typescript": "~6.0.2",
     "vite": "^8.0.12",
     "zod": "^4.4.3"
+  },
+  "dependencies": {
+    "pixelarticons": "^2.1.2"
   }
 }

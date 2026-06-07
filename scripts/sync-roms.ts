@@ -1,5 +1,5 @@
 /**
- * npm run roms:sync — interactive, additive repo importer (spec §4).
+ * npm run roms:sync - interactive, additive repo importer (spec §4).
  * Finds GitHub repos not yet in content.json and stages them as enabled:false.
  * Never reads-modifies existing entries.
  */
@@ -9,7 +9,7 @@ import * as p from "@clack/prompts";
 import { parseContent, type Rom } from "../src/schema";
 
 const USER = "chakri68";
-const CONTENT_PATH = resolve(process.cwd(), "public/content.json");
+const CONTENT_PATH = resolve(process.cwd(), "src/content.json");
 
 // Stable key order for pretty, minimal diffs.
 const KEY_ORDER = [
@@ -30,9 +30,24 @@ const KEY_ORDER = [
 ];
 
 const PALETTE = [
-  "#e8b923", "#5bc8af", "#e2725b", "#7b6cd9", "#4f9d69", "#c0563f",
-  "#3a7ca5", "#d98e04", "#f25f5c", "#ef476f", "#ffd166", "#118ab2",
-  "#06d6a0", "#1db954", "#ff6b6b", "#4ecdc4", "#95e1d3", "#f38181",
+  "#e8b923",
+  "#5bc8af",
+  "#e2725b",
+  "#7b6cd9",
+  "#4f9d69",
+  "#c0563f",
+  "#3a7ca5",
+  "#d98e04",
+  "#f25f5c",
+  "#ef476f",
+  "#ffd166",
+  "#118ab2",
+  "#06d6a0",
+  "#1db954",
+  "#ff6b6b",
+  "#4ecdc4",
+  "#95e1d3",
+  "#f38181",
 ];
 
 interface GhRepo {
@@ -66,7 +81,9 @@ async function fetchAllRepos(): Promise<GhRepo[]> {
     const url = `https://api.github.com/users/${USER}/repos?per_page=100&page=${page}&sort=full_name`;
     const res = await fetch(url, { headers });
     if (!res.ok) {
-      throw new Error(`GitHub API ${res.status}: ${res.statusText}${token ? "" : " (set GITHUB_TOKEN to raise the 60/hr unauth limit)"}`);
+      throw new Error(
+        `GitHub API ${res.status}: ${res.statusText}${token ? "" : " (set GITHUB_TOKEN to raise the 60/hr unauth limit)"}`,
+      );
     }
     const batch = (await res.json()) as GhRepo[];
     repos.push(...batch);
@@ -113,7 +130,7 @@ function serialize(content: { version: number; roms: Rom[] }): string {
 }
 
 async function main() {
-  p.intro("roms:sync — stage new repos into content.json");
+  p.intro("roms:sync - stage new repos into content.json");
 
   const content = parseContent(JSON.parse(readFileSync(CONTENT_PATH, "utf8")));
   // Match against the repo name an entry came from (repoName override, else id).
@@ -136,8 +153,8 @@ async function main() {
   const stale = content.roms.filter((r) => !liveNames.has(r.repoName ?? r.id));
   if (stale.length) {
     p.log.warn(
-      `These content.json entries have no matching repo (renamed/deleted?) — left untouched:\n` +
-        stale.map((r) => `  • ${r.id}`).join("\n")
+      `These content.json entries have no matching repo (renamed/deleted?) - left untouched:\n` +
+        stale.map((r) => `  • ${r.id}`).join("\n"),
     );
   }
 
@@ -167,11 +184,15 @@ async function main() {
   }
 
   const chosen = new Set(picked as string[]);
-  const additions = candidates.filter((r) => chosen.has(r.name)).map(stagedEntry);
+  const additions = candidates
+    .filter((r) => chosen.has(r.name))
+    .map(stagedEntry);
   const next = { ...content, roms: [...content.roms, ...additions] };
 
   writeFileSync(CONTENT_PATH, serialize(next));
-  p.outro(`Staged ${additions.length} repo(s) as enabled:false. Review + flip them on in content.json.`);
+  p.outro(
+    `Staged ${additions.length} repo(s) as enabled:false. Review + flip them on in content.json.`,
+  );
 }
 
 main().catch((err) => {

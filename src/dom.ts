@@ -1,11 +1,11 @@
-// Minimal DOM helpers — keeps view modules dependency-free.
+// Minimal DOM helpers - keeps view modules dependency-free.
 
 type Attrs = Record<string, string | number | boolean | undefined>;
 
 export function el<K extends keyof HTMLElementTagNameMap>(
   tag: K,
   attrs: Attrs = {},
-  children: (Node | string)[] = []
+  children: (Node | string)[] = [],
 ): HTMLElementTagNameMap[K] {
   const node = document.createElement(tag);
   for (const [k, v] of Object.entries(attrs)) {

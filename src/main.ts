@@ -15,7 +15,8 @@ watchKonami(() => stage.unlock());
 
 // Keyboard controls (spec §9). Letter keys a/b are intentionally NOT bound here so
 // they stay free for the Konami sequence; A/B are driven by the on-screen buttons.
-// Enter = A (insert / skip boot), Escape = B (eject / close overlay).
+// Arrows mirror the D-pad, Enter = A (insert / skip boot / play), Escape = B
+// (collapse / eject / close overlay).
 window.addEventListener("keydown", (e) => {
   if (store.get().overlayOpen) {
     if (e.key === "Escape") {
@@ -24,21 +25,37 @@ window.addEventListener("keydown", (e) => {
     }
     return;
   }
+  // Playing fullscreen: the iframe owns the keyboard. We don't handle (or
+  // preventDefault) any key so it flows to the focused demo — except Escape, which
+  // still exits if it reaches us (i.e. focus isn't inside the cross-origin demo).
+  if (store.get().expanded) {
+    if (e.key === "Escape") {
+      stage.back();
+      e.preventDefault();
+    }
+    return;
+  }
   switch (e.key) {
     case "ArrowLeft":
-      stage.moveSelection(-1);
+      stage.dpad("left");
       e.preventDefault();
       break;
     case "ArrowRight":
-      stage.moveSelection(1);
+      stage.dpad("right");
       e.preventDefault();
+      break;
+    case "ArrowUp":
+      stage.dpad("up");
+      break;
+    case "ArrowDown":
+      stage.dpad("down");
       break;
     case "Enter":
       stage.pressA();
       e.preventDefault();
       break;
     case "Escape":
-      stage.eject();
+      stage.back();
       e.preventDefault();
       break;
   }

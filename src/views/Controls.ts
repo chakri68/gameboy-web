@@ -1,4 +1,5 @@
 import { el } from "../dom";
+import { icon } from "../icons";
 
 export interface ControlsHandlers {
   onEject: () => void;
@@ -12,23 +13,50 @@ export class Controls {
   private soundBtn: HTMLButtonElement;
 
   constructor(handlers: ControlsHandlers) {
-    const eject = el("button", { class: "icon-btn", type: "button", "aria-label": "Eject / back to shelf", title: "Eject (Esc)", text: "⏏" });
-    this.soundBtn = el("button", { class: "icon-btn", type: "button", "aria-label": "Toggle sound", title: "Sound", text: "🔇" });
-    const shuffle = el("button", { class: "icon-btn", type: "button", "aria-label": "Shuffle — random ROM", title: "Shuffle", text: "🎲" });
+    const eject = el(
+      "button",
+      {
+        class: "icon-btn",
+        type: "button",
+        "aria-label": "Eject / back to shelf",
+        title: "Eject (Esc)",
+      },
+      [icon("undo")],
+    );
+    this.soundBtn = el(
+      "button",
+      {
+        class: "icon-btn",
+        type: "button",
+        "aria-label": "Toggle sound",
+        title: "Sound",
+      },
+      [icon("volume-off")],
+    );
+    const shuffle = el(
+      "button",
+      {
+        class: "icon-btn",
+        type: "button",
+        "aria-label": "Shuffle - random ROM",
+        title: "Shuffle",
+      },
+      [icon("shuffle")],
+    );
 
     eject.addEventListener("click", handlers.onEject);
     this.soundBtn.addEventListener("click", handlers.onToggleSound);
     shuffle.addEventListener("click", handlers.onShuffle);
 
-    this.el = el("div", { class: "controls", role: "toolbar", "aria-label": "Controls" }, [
-      shuffle,
-      this.soundBtn,
-      eject,
-    ]);
+    this.el = el(
+      "div",
+      { class: "controls", role: "toolbar", "aria-label": "Controls" },
+      [shuffle, this.soundBtn, eject],
+    );
   }
 
   setSound(on: boolean): void {
-    this.soundBtn.textContent = on ? "🔊" : "🔇";
+    this.soundBtn.replaceChildren(icon(on ? "volume-on" : "volume-off"));
     this.soundBtn.setAttribute("aria-pressed", String(on));
   }
 }

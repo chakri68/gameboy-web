@@ -1,17 +1,23 @@
-import raw from "../public/content.json";
+import raw from "./content.json";
 import { parseContent, type Rom } from "./schema";
 
-// Build-time import (see spec §3). Vite bundles content.json into the JS and also
-// copies it to dist as /content.json (public/), keeping the future fetch-swap open.
-// Validation also runs in the Vite plugin so a bad entry fails `vite build`; this
-// runtime parse is the dev-server / belt-and-suspenders guarantee.
+// Build-time import (see spec §3). content.json lives in src/ (Vite forbids JS
+// imports from public/), so it is bundled straight into the JS. Validation also
+// runs in the Vite plugin so a bad entry fails `vite build`; this runtime parse is
+// the dev-server / belt-and-suspenders guarantee.
 export const content = parseContent(raw);
 
-/** ROMs shown on the shelf by default: enabled and not hidden. */
-export const visibleRoms = (): Rom[] => content.roms.filter((r) => r.enabled && !r.hidden);
+/** ROMs shown in the game list by default: enabled and not hidden. */
+export const visibleRoms = (): Rom[] =>
+  content.roms.filter((r) => r.enabled && !r.hidden);
+
+/** Lookup a single enabled ROM by id (used by the cartridge preview). */
+export const romById = (id: string): Rom | undefined =>
+  content.roms.find((r) => r.id === id && r.enabled);
 
 /** Hidden ROMs revealed only after the Konami unlock. */
-export const hiddenRoms = (): Rom[] => content.roms.filter((r) => r.enabled && r.hidden);
+export const hiddenRoms = (): Rom[] =>
+  content.roms.filter((r) => r.enabled && r.hidden);
 
 /** Everything renderable once hidden ROMs are unlocked. */
 export const allEnabledRoms = (unlocked: boolean): Rom[] =>

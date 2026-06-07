@@ -30,12 +30,12 @@ export class Screen {
 
   constructor(cb: ScreenCallbacks) {
     this.cb = cb;
-    this.content = el("div", { class: "screen__content" });
-    this.el = el("div", { class: "screen", role: "group", "aria-label": "Console screen" }, [
-      this.content,
-      el("div", { class: "screen__scanlines", "aria-hidden": "true" }),
-      el("div", { class: "screen__glare", "aria-hidden": "true" }),
-    ]);
+    this.content = el("div", { class: "lcd__content" });
+    this.el = el(
+      "div",
+      { class: "lcd", role: "group", "aria-label": "Console screen" },
+      [this.content],
+    );
     window.addEventListener("resize", this.resizeHandler, { passive: true });
   }
 
@@ -45,11 +45,15 @@ export class Screen {
     if (this.cb.isSoundOn()) this.cb.onBootBlip();
 
     const wordmark = el("div", { class: "boot__wordmark", text: "CHAKRI" });
-    const overlay = el("div", { class: "boot", role: "status", "aria-label": "Booting" }, [
-      el("div", { class: "boot__sweep", "aria-hidden": "true" }),
-      wordmark,
-      el("div", { class: "boot__hint", text: "press A to skip" }),
-    ]);
+    const overlay = el(
+      "div",
+      { class: "boot", role: "status", "aria-label": "Booting" },
+      [
+        el("div", { class: "boot__sweep", "aria-hidden": "true" }),
+        wordmark,
+        el("div", { class: "boot__hint", text: "press A to skip" }),
+      ],
+    );
     this.content.append(overlay);
 
     let done = false;
@@ -99,8 +103,14 @@ export class Screen {
     iframe.src = rom.demo!;
     iframe.title = `${rom.title} demo`;
     iframe.loading = "lazy";
-    iframe.setAttribute("sandbox", "allow-scripts allow-same-origin allow-popups allow-forms");
-    iframe.setAttribute("allow", "accelerometer; gyroscope; magnetometer; fullscreen");
+    iframe.setAttribute(
+      "sandbox",
+      "allow-scripts allow-same-origin allow-popups allow-forms",
+    );
+    iframe.setAttribute(
+      "allow",
+      "accelerometer; gyroscope; magnetometer; fullscreen",
+    );
     wrap.append(iframe);
     this.content.append(wrap);
     this.iframe = iframe;
@@ -115,7 +125,7 @@ export class Screen {
     };
     // Best-effort: a frame that never fires load within the timeout is treated as
     // blocked and falls back. (Cross-origin framing cannot be detected reliably at
-    // runtime — build-time verification per §7.4 is the authoritative check.)
+    // runtime - build-time verification per §7.4 is the authoritative check.)
     iframe.addEventListener("load", () => {
       if (settled) return;
       settled = true;
@@ -124,6 +134,17 @@ export class Screen {
     this.frameTimer = window.setTimeout(fallback, FRAME_TIMEOUT_MS);
 
     requestAnimationFrame(() => this.fitIframe());
+  }
+
+  /**
+   * Focus what the player should drive: the demo iframe if there is one (so the
+   * cross-origin demo consumes the keyboard), else the first interactive element
+   * (launch/info card), else the screen itself.
+   */
+  focusInteractive(): void {
+    const target =
+      this.iframe ?? this.el.querySelector<HTMLElement>("a, button") ?? this.el;
+    target.focus?.();
   }
 
   /** Re-fit the iframe so the demo renders at desktop width, scaled into the glass. */
