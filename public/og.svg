@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" font-family="'DejaVu Sans Mono','Courier New',monospace">
+  <defs>
+    <radialGradient id="room" cx="50%" cy="0%" r="120%">
+      <stop offset="0%" stop-color="#14131c"/>
+      <stop offset="70%" stop-color="#0a0910"/>
+      <stop offset="100%" stop-color="#050409"/>
+    </radialGradient>
+    <linearGradient id="screen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1d3a2a"/>
+      <stop offset="100%" stop-color="#0b1410"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#room)"/>
+
+  <!-- scanlines -->
+  <g opacity="0.06">
+    <rect width="1200" height="630" fill="url(#room)"/>
+  </g>
+
+  <!-- console screen -->
+  <g transform="translate(72,150)">
+    <rect x="-18" y="-18" width="456" height="336" rx="20" fill="#272338" stroke="#58527a" stroke-width="2"/>
+    <rect width="420" height="300" rx="8" fill="url(#screen)"/>
+    <text x="210" y="165" text-anchor="middle" fill="#8af2b0" font-size="44" font-weight="bold" letter-spacing="4">CHAKRI</text>
+    <circle cx="396" cy="-2" r="6" fill="#6cff8e"/>
+  </g>
+
+  <!-- cartridge row -->
+  <g transform="translate(620,150)">
+    <g transform="translate(0,0)">
+      <rect width="86" height="108" rx="8" fill="#4a4663"/>
+      <rect x="8" y="26" width="70" height="70" rx="4" fill="#f4f1e6" stroke="#e8b923" stroke-width="3"/>
+    </g>
+    <g transform="translate(104,12)">
+      <rect width="86" height="108" rx="8" fill="#553f5e"/>
+      <rect x="8" y="26" width="70" height="70" rx="4" fill="#f4f1e6" stroke="#ef476f" stroke-width="3"/>
+    </g>
+    <g transform="translate(208,0)">
+      <rect width="86" height="108" rx="8" fill="#3f4a5e"/>
+      <rect x="8" y="26" width="70" height="70" rx="4" fill="#f4f1e6" stroke="#06d6a0" stroke-width="3"/>
+    </g>
+    <g transform="translate(312,14)">
+      <rect width="86" height="108" rx="8" fill="#4a4663"/>
+      <rect x="8" y="26" width="70" height="70" rx="4" fill="#f4f1e6" stroke="#7b6cd9" stroke-width="3"/>
+    </g>
+  </g>
+
+  <!-- wordmark + tagline -->
+  <text x="620" y="360" fill="#e8e6f0" font-size="76" font-weight="bold" letter-spacing="2">chakri.me</text>
+  <text x="624" y="410" fill="#8af2b0" font-size="26" letter-spacing="1">// ROM SHELF</text>
+  <text x="624" y="466" fill="#9b97b2" font-size="23">An interactive cartridge shelf</text>
+  <text x="624" y="500" fill="#9b97b2" font-size="23">of projects. Pick a ROM. Press start.</text>
+
+  <rect x="0" y="612" width="1200" height="18" fill="#000"/>
+</svg>
