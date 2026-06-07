@@ -49,6 +49,18 @@
       "accent": "#d98e04",
       "enabled": true
     },
+    {
+      "id": "boirds",
+      "title": "Boids Simulation for birds",
+      "blurb": "A flocking simulation that models bird-like movement using separation, alignment, and cohesion rules.",
+      "tech": ["typescript", "canvas", "simulation", "visualization"],
+      "repo": "https://github.com/chakri68/boirds",
+      "demo": "https://chakri.me/boirds/",
+      "display": "embed",
+      "tier": 1,
+      "accent": "#5bc8af",
+      "enabled": true
+    },
 
     {
       "id": "codeCollab",
