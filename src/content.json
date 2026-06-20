@@ -61,6 +61,18 @@
       "accent": "#5bc8af",
       "enabled": true
     },
+    {
+      "id": "life-sim",
+      "title": "Life Sim",
+      "blurb": "Conway's Game of Life extended into a configurable, multi-state cellular-automaton playground.",
+      "tech": ["typescript", "canvas", "cellular-automata", "simulation"],
+      "repo": "https://github.com/chakri68/life-sim",
+      "demo": "https://life-sim.chakri.me/",
+      "display": "embed",
+      "tier": 1,
+      "accent": "#7c6ff0",
+      "enabled": true
+    },
 
     {
       "id": "codeCollab",
